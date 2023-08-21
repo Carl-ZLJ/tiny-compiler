@@ -1,0 +1,19 @@
+{
+  "name": "tiny-compiler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest"
+  },
+  "keywords": [],
+  "author": "Kael Zhu <zljmms32@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "vitest": "^0.34.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zljmms32/tiny-compiler.git"
+  }
+}
