@@ -21,9 +21,14 @@ export type Node = {
 }
 
 export interface RootNode extends Node {
-    body: NumberLiteralNode[]
+    body: (CallExpressionNode | NumberLiteralNode)[]
 }
 
 export interface NumberLiteralNode extends Node {
     value: string
+}
+
+export interface CallExpressionNode extends Node {
+    name: string
+    params: (NumberLiteralNode | CallExpressionNode)[]
 }

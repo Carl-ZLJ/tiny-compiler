@@ -4,7 +4,66 @@ import { parser } from './parser'
 
 
 describe('parser', () => {
-    it.skip('should parse tokens into AST', () => {
+    it('should parse "22"', () => {
+        const tokens = [
+            { type: TokenTypes.Num, value: '22' },
+        ]
+        const ast = {
+            type: NodeTypes.Root,
+            body: [{
+                type: NodeTypes.NumberLiteral,
+                value: '22',
+            }]
+        }
+        expect(parser(tokens)).toEqual(ast)
+    })
+
+    it('should parse "add"', () => {
+
+        const tokens = [
+            { type: TokenTypes.Name, value: 'add' },
+        ]
+        const ast = {
+            type: NodeTypes.Root,
+            body: [{
+                type: NodeTypes.CallExpression,
+                name: 'add',
+                params: [],
+            }]
+        }
+        expect(parser(tokens)).toEqual(ast)
+    })
+
+    it('should parse "(add 1 22)"', () => {
+
+        const tokens = [
+            { type: TokenTypes.Paren, value: '(' },
+            { type: TokenTypes.Name, value: 'add' },
+            { type: TokenTypes.Num, value: '1' },
+            { type: TokenTypes.Num, value: '22' },
+            { type: TokenTypes.Paren, value: ')' },
+        ]
+        const ast = {
+            type: NodeTypes.Root,
+            body: [{
+                type: NodeTypes.CallExpression,
+                name: 'add',
+                params: [
+                    {
+                        type: NodeTypes.NumberLiteral,
+                        value: '1',
+                    },
+                    {
+                        type: NodeTypes.NumberLiteral,
+                        value: '22',
+                    }
+                ],
+            }]
+        }
+        expect(parser(tokens)).toEqual(ast)
+    })
+
+    it('should parse tokens into AST', () => {
         const tokens: Token[] = [
             { type: TokenTypes.Paren, value: '(' },
             { type: TokenTypes.Name, value: 'add' },
@@ -38,36 +97,6 @@ describe('parser', () => {
             }]
         }
 
-        expect(parser(tokens)).toEqual(ast)
-    })
-
-    it('should parse "22"', () => {
-        const tokens = [
-            { type: TokenTypes.Num, value: '22' },
-        ]
-        const ast = {
-            type: NodeTypes.Root,
-            body: [{
-                type: NodeTypes.NumberLiteral,
-                value: '22',
-            }]
-        }
-        expect(parser(tokens)).toEqual(ast)
-    })    
-
-    it('should parse "add"', () => {
-
-        const tokens = [
-            { type: TokenTypes.Name, value: 'add' },
-        ]
-        const ast = {
-            type: NodeTypes.Root,
-            body: [{
-                type: NodeTypes.CallExpression,
-                name: 'add',
-                params: [{}],
-            }]
-        }
         expect(parser(tokens)).toEqual(ast)
     })
 

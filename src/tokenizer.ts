@@ -1,6 +1,6 @@
 import { Token, TokenTypes } from "./types"
 
-let EOL = Symbol('EOL')
+export const EOL = Symbol('EOL')
 let tokens: Token[] = []
 let currentName: string = ''
 let currentNum: string = ''
