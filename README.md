@@ -13,5 +13,5 @@
     - Syntactic Analysis
         - takes the tokens and reformats them into a representation that describes
         each part of the syntax and their relation to one another
-        - this is known as intermediate representation or **abstract syntax tree**
-
+        - this is known as an intermediate representation or **abstract syntax tree**
+        - **parser** is used to generate the AST

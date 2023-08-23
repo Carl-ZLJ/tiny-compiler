@@ -1,14 +1,4 @@
-export enum TokenTypes {
-    Paren = 'paren',
-    Name = 'name',
-    Num = 'number',
-}
-
-
-export interface Token {
-    type: TokenTypes
-    value: string
-}
+import { Token, TokenTypes } from "./types"
 
 let EOL = Symbol('EOL')
 let tokens: Token[] = []

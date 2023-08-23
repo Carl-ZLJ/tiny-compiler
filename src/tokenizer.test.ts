@@ -1,5 +1,6 @@
 import { expect, it, describe } from 'vitest'
-import { tokenizer, TokenTypes } from './tokenizer'
+import { tokenizer } from './tokenizer'
+import { TokenTypes } from './types'
 
 
 describe('tokenizer: single value', () => {
