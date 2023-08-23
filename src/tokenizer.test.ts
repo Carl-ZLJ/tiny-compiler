@@ -64,6 +64,19 @@ describe('tokenizer: multiple values', () => {
         expect(tokenizer(input)).toEqual(output)
     })
 
+    it('add 22 11', () => {
+        const input = `(add 22 11)`
+        const output = [
+            { type: TokenTypes.Paren, value: '(' },
+            { type: TokenTypes.Name, value: 'add' },
+            { type: TokenTypes.Num, value: '22' },
+            { type: TokenTypes.Num, value: '11' },
+            { type: TokenTypes.Paren, value: ')' },
+        ]
+
+        expect(tokenizer(input)).toEqual(output)
+    })
+
     it('add 2 (subtract 4 2)', () => {
         const input = `(add 2 (subtract 4 2))`
         const output = [

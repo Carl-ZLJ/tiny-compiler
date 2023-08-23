@@ -10,65 +10,80 @@ export interface Token {
     value: string
 }
 
+let EOL = Symbol('EOL')
+let tokens: Token[] = []
+let currentName: string = ''
+let currentNum: string = ''
 
 export function tokenizer(input: string): Token[] {
-    const tokens: Token[] = []
-    let current = 0
-
-    while (current < input.length) {
-        let char = input[current]
-        if (char === '(') {
-            tokens.push({
-                type: TokenTypes.Paren,
-                value: '(',
-            })
-            current++
-            continue
-        }
-
-        if (char === ')') {
-            tokens.push({
-                type: TokenTypes.Paren,
-                value: ')',
-            })
-            current++
-            continue
-        }
-
-
-        if (char.match(/\s/)) {
-            current++
-            continue
-        }
-
-        const Letter = /[a-z]/i
-        if (Letter.test(char)) {
-            let value = ''
-            while (Letter.test(char) && current < input.length) {
-                value += char
-                current++
-                char = input[current]
-            }
-            tokens.push({
-                type: TokenTypes.Name,
-                value,
-            })
-        }
-
-        const Num = /[0-9]/
-        if (Num.test(char)) {
-            let value = ''
-            while (Num.test(char) && current < input.length) {
-                value += char
-                current++
-                char = input[current]
-            }
-            tokens.push({
-                type: TokenTypes.Num,
-                value,
-            })
-        }
-    }
-    
+    tokens = []
+    match(input)
     return tokens
+}
+
+function match(input: string) {
+    let state = start
+    for (let c of input) {
+        state = state(c)
+    }
+    state = state(' ')
+}
+
+function emit(token: Token) {
+    tokens.push(token)
+    if (token.type == TokenTypes.Name) {
+        currentName = ''
+    }
+    if (token.type == TokenTypes.Num) {
+        currentNum = ''
+    }
+}
+
+function start(c: any) {
+    if (c == '(' || c == ')') {
+        return paren(c)
+    } else if (c.match(/^[a-zA-Z]$/)) {
+        return name(c)
+    } else if (c.match(/^[0-9]$/)) {
+        return num(c)
+    } else if (c.match(/^[ \n\t\f]$/)) {
+        return start
+    } else {
+        return
+    }
+}
+
+function paren(c: any): any {
+    emit({
+        type: TokenTypes.Paren,
+        value: c,
+    })
+
+    return start
+}
+
+function name(c: any): any {
+    if (c == ' ' || c == EOL || c == ')' || c == '(') {
+        emit({
+            type: TokenTypes.Name,
+            value: currentName,
+        })
+        return start(c)
+    } else {
+        currentName += c
+        return name
+    }
+}
+
+function num(c: any): any {
+    if (c == ' ' || c == EOL || c == ')' || c == '(') {
+        emit({
+            type: TokenTypes.Num,
+            value: currentNum,
+        })
+        return start(c)
+    } else {
+        currentNum += c
+        return num
+    }
 }
