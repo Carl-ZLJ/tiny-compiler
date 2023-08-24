@@ -3,7 +3,7 @@ import { NodeTypes, Token, TokenTypes } from './types'
 import { parser } from './parser'
 
 
-describe('parser', () => {
+describe('simple parser', () => {
     it('should parse "22"', () => {
         const tokens = [
             { type: TokenTypes.Num, value: '22' },
@@ -33,9 +33,10 @@ describe('parser', () => {
         }
         expect(parser(tokens)).toEqual(ast)
     })
+})
 
+describe('compound expressions', () => {
     it('should parse "(add 1 22)"', () => {
-
         const tokens = [
             { type: TokenTypes.Paren, value: '(' },
             { type: TokenTypes.Name, value: 'add' },
@@ -61,6 +62,56 @@ describe('parser', () => {
             }]
         }
         expect(parser(tokens)).toEqual(ast)
+    })
+
+    it('should parse "(add 1 22)(add 22 33)"', () => {
+
+        const tokens = [
+            { type: TokenTypes.Paren, value: '(' },
+            { type: TokenTypes.Name, value: 'add' },
+            { type: TokenTypes.Num, value: '1' },
+            { type: TokenTypes.Num, value: '22' },
+            { type: TokenTypes.Paren, value: ')' },
+            { type: TokenTypes.Paren, value: '(' },
+            { type: TokenTypes.Name, value: 'add' },
+            { type: TokenTypes.Num, value: '22' },
+            { type: TokenTypes.Num, value: '33' },
+            { type: TokenTypes.Paren, value: ')' },
+        ]
+        const ast = {
+            type: NodeTypes.Root,
+            body: [
+                {
+                    type: NodeTypes.CallExpression,
+                    name: 'add',
+                    params: [
+                        {
+                            type: NodeTypes.NumberLiteral,
+                            value: '1',
+                        },
+                        {
+                            type: NodeTypes.NumberLiteral,
+                            value: '22',
+                        }
+                    ],
+                },
+                {
+                    type: NodeTypes.CallExpression,
+                    name: 'add',
+                    params: [
+                        {
+                            type: NodeTypes.NumberLiteral,
+                            value: '22',
+                        },
+                        {
+                            type: NodeTypes.NumberLiteral,
+                            value: '33',
+                        }
+                    ],
+                }
+            ]
+        }
+        expect(parser(tokens)).toStrictEqual(ast)
     })
 
     it('should parse tokens into AST', () => {

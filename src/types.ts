@@ -1,3 +1,5 @@
+export const EOL = Symbol('EOL');
+
 export enum TokenTypes {
     Paren = 'paren',
     Name = 'name',
@@ -20,8 +22,10 @@ export type Node = {
     type: NodeTypes
 }
 
+type ChildNode = CallExpressionNode | NumberLiteralNode
+
 export interface RootNode extends Node {
-    body: (CallExpressionNode | NumberLiteralNode)[]
+    body: ChildNode[]
 }
 
 export interface NumberLiteralNode extends Node {
@@ -30,5 +34,5 @@ export interface NumberLiteralNode extends Node {
 
 export interface CallExpressionNode extends Node {
     name: string
-    params: (NumberLiteralNode | CallExpressionNode)[]
+    params: ChildNode[]
 }
