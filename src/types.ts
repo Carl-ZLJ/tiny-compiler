@@ -22,11 +22,11 @@ export type Node = {
     type: NodeTypes
 }
 
-export type ChildNode = CallExpressionNode | NumberLiteralNode
 
 export interface RootNode extends Node {
     type: NodeTypes.Root
     body: ChildNode[]
+    _context?: ChildNode[]
 }
 
 export interface NumberLiteralNode extends Node {
@@ -34,20 +34,30 @@ export interface NumberLiteralNode extends Node {
     value: string
 }
 
+
+export interface StringLiteralNode extends Node {
+    type: NodeTypes.StringLiteral
+    value: string
+}
+
 export interface CallExpressionNode extends Node {
     type: NodeTypes.CallExpression
     name: string
     params: ChildNode[]
+    _context?: ChildNode[]
 }
 
-interface VisitorFunc {
-    enter(node: ChildNode | RootNode, parent: ChildNode | RootNode | null): void;
-    exit(node: ChildNode | RootNode, parent: ChildNode | RootNode | null): void;
+export type ChildNode = CallExpressionNode | NumberLiteralNode | StringLiteralNode;
+
+type Method<N, P> = (node: N, parent: P) => void;
+interface VisitorFunc<N, P> {
+    enter: Method<N, P>    
+    exit?: Method<N, P>
 }
 
 export interface Visitor {
-    Program: VisitorFunc
-    NumberLiteral: VisitorFunc
-    StringLiteral: VisitorFunc
-    CallExpression: VisitorFunc
+    Program?: VisitorFunc<RootNode, null>
+    NumberLiteral?: VisitorFunc<NumberLiteralNode, CallExpressionNode>
+    StringLiteral?: VisitorFunc<StringLiteralNode, CallExpressionNode>
+    CallExpression?: VisitorFunc<CallExpressionNode, CallExpressionNode | RootNode>
 }
