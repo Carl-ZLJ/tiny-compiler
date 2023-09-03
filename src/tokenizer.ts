@@ -1,17 +1,7 @@
-export enum TokenTypes {
-    Paren = 'paren',
-    Name = 'name',
-    Num = 'number',
-}
+import { EOL } from "./types"
+import { Token, TokenTypes } from "./types"
 
-
-export interface Token {
-    type: TokenTypes
-    value: string
-}
-
-let EOL = Symbol('EOL')
-let tokens: Token[] = []
+let tokens: Token[]
 let currentName: string = ''
 let currentNum: string = ''
 
@@ -26,7 +16,7 @@ function match(input: string) {
     for (let c of input) {
         state = state(c)
     }
-    state = state(' ')
+    state = state(EOL)
 }
 
 function emit(token: Token) {
@@ -39,21 +29,28 @@ function emit(token: Token) {
     }
 }
 
-function start(c: any) {
-    if (c == '(' || c == ')') {
-        return paren(c)
-    } else if (c.match(/^[a-zA-Z]$/)) {
-        return name(c)
-    } else if (c.match(/^[0-9]$/)) {
-        return num(c)
-    } else if (c.match(/^[ \n\t\f]$/)) {
-        return start
-    } else {
+function start(c: string | symbol): any {
+    if (typeof c === 'symbol' && c == EOL) {
         return
+    }
+
+    if (typeof c === 'string') {
+        if (c == '(' || c == ')') {
+            return paren(c)
+        } 
+        if (c.match(/^[a-zA-Z]$/)) {
+            return name(c)
+        } 
+        if (c.match(/^[0-9]$/)) {
+            return num(c)
+        } 
+        if (c.match(/^[ \n\t\f]$/)) {
+            return start
+        }
     }
 }
 
-function paren(c: any): any {
+function paren(c: string) {
     emit({
         type: TokenTypes.Paren,
         value: c,
@@ -62,27 +59,27 @@ function paren(c: any): any {
     return start
 }
 
-function name(c: any): any {
-    if (c == ' ' || c == EOL || c == ')' || c == '(') {
+function name(c: string | symbol) {
+    if (c == ' ' || c == EOL) {
         emit({
             type: TokenTypes.Name,
             value: currentName,
         })
         return start(c)
-    } else {
+    } else if (typeof c === 'string') {
         currentName += c
         return name
     }
 }
 
-function num(c: any): any {
-    if (c == ' ' || c == EOL || c == ')' || c == '(') {
+function num(c: string | symbol) {
+    if (c == ' ' || c == EOL || c == ')') {
         emit({
             type: TokenTypes.Num,
             value: currentNum,
         })
         return start(c)
-    } else {
+    } else if (typeof c === 'string') {
         currentNum += c
         return num
     }
