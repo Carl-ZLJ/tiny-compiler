@@ -34,10 +34,12 @@ export interface NumberLiteralNode extends Node {
     value: string
 }
 
+
 export interface StringLiteralNode extends Node {
     type: NodeTypes.StringLiteral
     value: string
 }
+
 export interface CallExpressionNode extends Node {
     type: NodeTypes.CallExpression
     name: string
