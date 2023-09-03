@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { NodeTypes, RootNode, Visitor } from './types'
+import { CallExpressionNode, NodeTypes, NumberLiteralNode, RootNode, Visitor } from './types'
 import { traverser } from './traverser'
 
 
@@ -28,37 +28,37 @@ test('traverser', () => {
     const seqs: string[] = []
     const visitors: Visitor = {
         Program: {
-            enter(node, parent) {
+            enter(_node, _parent) {
                 seqs.push('Program enter')
             },
-            exit(node, parent) {
+            exit(_node, _parent) {
                 seqs.push('Program exit')
             },
         },
 
         CallExpression: {
             enter(node, parent) {
-                seqs.push('CallExpression enter')
+                seqs.push(node.name + ' CallExpression enter ' + parent?.type)
             },
-            exit(node, parent) {
-                seqs.push('CallExpression exit')
+            exit(node: CallExpressionNode, parent) {
+                seqs.push(node.name + ' CallExpression exit ' + parent?.type)
             },
         },
 
         NumberLiteral: {
             enter(node, parent) {
-                seqs.push('NumberLiteral enter')
+                seqs.push('NumberLiteral enter ' + node.value + ' ' + parent.name)
             },
             exit(node, parent) {
-                seqs.push('NumberLiteral exit')
+                seqs.push('NumberLiteral exit ' + node.value + ' ' + parent.name)
             },
         },
 
         StringLiteral: {
-            enter(node, parent) {
+            enter(_node, _parent) {
                 seqs.push('StringLiteral enter')
             },
-            exit(node, parent) {
+            exit(_node, _parent) {
                 seqs.push('StringLiteral exit')
             },
         }
@@ -67,16 +67,16 @@ test('traverser', () => {
     traverser(ast, visitors)
     expect(seqs).toEqual([
         'Program enter',
-        'CallExpression enter',
-        'NumberLiteral enter',
-        'NumberLiteral exit',
-        'CallExpression enter',
-        'NumberLiteral enter',
-        'NumberLiteral exit',
-        'NumberLiteral enter',
-        'NumberLiteral exit',
-        'CallExpression exit',
-        'CallExpression exit',
+        'add CallExpression enter Program',
+        'NumberLiteral enter 2 add',
+        'NumberLiteral exit 2 add',
+        'subtract CallExpression enter CallExpression',
+        'NumberLiteral enter 4 subtract',
+        'NumberLiteral exit 4 subtract',
+        'NumberLiteral enter 2 subtract',
+        'NumberLiteral exit 2 subtract',
+        'subtract CallExpression exit CallExpression',
+        'add CallExpression exit Program',
         'Program exit',
     ])
 })
