@@ -1,28 +1,25 @@
-import { ChildNode, NodeTypes, RootNode, Visitor } from "./types";
+import { ChildNode, NodeTypes, Nodes, Parent, RootNode, Visitor, VisitorFunc } from "./types";
 
 
-export function traverser(ast: RootNode, visitors: Visitor) {
+export function traverser(ast: RootNode, visitor: Visitor) {
 
-    function traverseNode(node: RootNode | ChildNode, parent: RootNode | ChildNode | null) {
-        let methods = visitors[node.type]
+    function traverseNode<T extends Nodes>(node: T, parent: Parent) {
+        let methods = visitor[node.type]!
 
-        if (methods && methods.enter) {
-            methods.enter(node, parent)
-        }
-
+        methods?.enter(node, parent)
         if (node.type === NodeTypes.NumberLiteral) {
+        } else if (node.type === NodeTypes.StringLiteral) {
         } else if (node.type === NodeTypes.CallExpression) {
             traverseArray(node.params, node)
-        } else if (node.type === NodeTypes.Root) {
+        } else if (node.type === NodeTypes.Program) {
             traverseArray(node.body, node)
         }
 
-        if (methods && methods.exit) {
-            methods.exit(node, parent)
-        }
+        methods?.exit?.(node, parent)
+
     }
 
-    function traverseArray(nodes: ChildNode[], parent: RootNode | ChildNode | null) {
+    function traverseArray(nodes: ChildNode[], parent: Parent) {
         nodes.forEach(n => {
             traverseNode(n, parent)
         })

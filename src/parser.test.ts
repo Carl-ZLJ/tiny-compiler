@@ -9,7 +9,7 @@ describe('simple parser', () => {
             { type: TokenTypes.Num, value: '22' },
         ]
         const ast = {
-            type: NodeTypes.Root,
+            type: NodeTypes.Program,
             body: [{
                 type: NodeTypes.NumberLiteral,
                 value: '22',
@@ -24,7 +24,7 @@ describe('simple parser', () => {
             { type: TokenTypes.Name, value: 'add' },
         ]
         const ast = {
-            type: NodeTypes.Root,
+            type: NodeTypes.Program,
             body: [{
                 type: NodeTypes.CallExpression,
                 name: 'add',
@@ -45,7 +45,7 @@ describe('compound expressions', () => {
             { type: TokenTypes.Paren, value: ')' },
         ]
         const ast = {
-            type: NodeTypes.Root,
+            type: NodeTypes.Program,
             body: [{
                 type: NodeTypes.CallExpression,
                 name: 'add',
@@ -79,7 +79,7 @@ describe('compound expressions', () => {
             { type: TokenTypes.Paren, value: ')' },
         ]
         const ast = {
-            type: NodeTypes.Root,
+            type: NodeTypes.Program,
             body: [
                 {
                     type: NodeTypes.CallExpression,

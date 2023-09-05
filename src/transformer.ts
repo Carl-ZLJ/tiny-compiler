@@ -3,7 +3,7 @@ import { NodeTypes, RootNode, Visitor } from "./types";
 
 export function transformer(ast: RootNode) {
     let newAst = {
-        type: NodeTypes.Root,
+        type: NodeTypes.Program,
         body: []
     }
 

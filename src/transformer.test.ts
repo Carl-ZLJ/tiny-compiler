@@ -4,7 +4,7 @@ import { transformer } from './transformer'
 
 test('transformer', () => {
     const origin: RootNode = {
-        type: NodeTypes.Root,
+        type: NodeTypes.Program,
         body: [{
             type: NodeTypes.CallExpression,
             name: 'add',

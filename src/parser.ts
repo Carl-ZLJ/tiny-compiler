@@ -80,7 +80,7 @@ function number(t: Token) {
 
 function createRootNode(): RootNode {
     return {
-        type: NodeTypes.Root,
+        type: NodeTypes.Program,
         body: [],
     }
 }
