@@ -3,10 +3,12 @@ import { ChildNode, NodeTypes, Nodes, Parent, RootNode, Visitor, VisitorFunc } f
 
 export function traverser(ast: RootNode, visitor: Visitor) {
 
-    function traverseNode<T extends Nodes>(node: T, parent: Parent) {
-        let methods = visitor[node.type]!
+    function traverseNode(node: Nodes, parent: Parent) {
+        let methodName = `${node.type}` as keyof Visitor
+        let methods = visitor[methodName] as VisitorFunc<typeof node, Parent>
 
         methods?.enter(node, parent)
+
         if (node.type === NodeTypes.NumberLiteral) {
         } else if (node.type === NodeTypes.StringLiteral) {
         } else if (node.type === NodeTypes.CallExpression) {

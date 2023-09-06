@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 
-import { CallExpressionNode, NodeTypes, NumberLiteralNode, RootNode, Visitor } from './types'
+import { NodeTypes, RootNode, Visitor } from './types'
 
 import { traverser } from './traverser'
 
@@ -40,19 +40,19 @@ test('traverser', () => {
 
         CallExpression: {
             enter(node, parent) {
-                seqs.push((node as CallExpressionNode).name + ' CallExpression enter ' + parent?.type)
+                seqs.push(node.name + ' CallExpression enter ' + parent?.type)
             },
             exit(node, parent) {
-                seqs.push((node as CallExpressionNode).name + ' CallExpression exit ' + parent?.type)
+                seqs.push(node.name + ' CallExpression exit ' + parent?.type)
             },
         },
 
         NumberLiteral: {
             enter(node, parent) {
-                seqs.push('NumberLiteral enter ' + (node as NumberLiteralNode).value + ' ' + (parent as CallExpressionNode)!.name)
+                seqs.push('NumberLiteral enter ' + node.value + ' ' + parent.name)
             },
             exit(node, parent) {
-                seqs.push('NumberLiteral exit ' + (node as NumberLiteralNode).value + ' ' + (parent as CallExpressionNode)!.name)
+                seqs.push('NumberLiteral exit ' + node.value + ' ' + parent.name)
             },
         },
 

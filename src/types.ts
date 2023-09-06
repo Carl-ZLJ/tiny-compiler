@@ -51,41 +51,22 @@ export type ChildNode = CallExpressionNode | NumberLiteralNode | StringLiteralNo
 
 export type Parent = RootNode | CallExpressionNode | null;
 
-// type Method<N, P> = (node: N, parent: P) => void;
-type Method = (node: RootNode | ChildNode, parent: Parent) => void;
+type Method<N, P> = (node: N, parent: P) => void;
 
-// export interface VisitorFunc<N, P> {
-//     enter: Method<N, P>
-//     exit?: Method<N, P>
-// }
-
-export interface VisitorFunc {
-    enter: Method
-    exit?: Method
+export interface VisitorFunc<N, P> {
+    enter: Method<N, P>
+    exit?: Method<N, P>
 }
 
 export interface Visitor {
-    Program?: VisitorFunc
-    NumberLiteral?: VisitorFunc
-    StringLiteral?: VisitorFunc
-    CallExpression?: VisitorFunc
+    Program?: ProgramVisitor
+    NumberLiteral?: NumberLiteralVisitor
+    StringLiteral?: StringLiteralVisitor
+    CallExpression?: CallExpressionVisitor
 }
 
-// type ProgramVisitor = VisitorFunc<RootNode, null>
-// type NumberLiteralVisitor = VisitorFunc<NumberLiteralNode, CallExpressionNode>
-// type StringLiteralVisitor = VisitorFunc<StringLiteralNode, CallExpressionNode>
-// type CallExpressionVisitor = VisitorFunc<CallExpressionNode, RootNode | CallExpressionNode>
+type ProgramVisitor = VisitorFunc<RootNode, null>
+type NumberLiteralVisitor = VisitorFunc<NumberLiteralNode, CallExpressionNode>
+type StringLiteralVisitor = VisitorFunc<StringLiteralNode, CallExpressionNode>
+type CallExpressionVisitor = VisitorFunc<CallExpressionNode, RootNode | CallExpressionNode>
 
-
-interface IVisitor {
-
-    enter(node: RootNode, parent: Parent): void
-    enter(node: CallExpressionNode, parent: Parent): void
-    enter(node: NumberLiteralNode, parent: Parent): void
-    enter(node: StringLiteralNode, parent: Parent): void
-
-    exit?(node: RootNode, parent: Parent): void
-    exit?(node: CallExpressionNode, parent: Parent): void
-    exit?(node: NumberLiteralNode, parent: Parent): void
-    exit?(node: StringLiteralNode, parent: Parent): void
-}
