@@ -28,3 +28,7 @@
     - Traversal
       - This process goes to each node in the AST depth-first
       - **Visitors**
+    - Transformer
+
+- Code Generation
+  - takes the final AST and turns it into code again
