@@ -37,7 +37,7 @@ export interface Identifier extends Node {
 export interface CallExpression extends Node {
     type: Types.CallExpression
     callee: Identifier
-    arguments: (NumberLiteral| CallExpression)[]
+    arguments: (NumberLiteral| CallExpression | StringLiteral)[]
 }
 
 export interface Expression extends Node {

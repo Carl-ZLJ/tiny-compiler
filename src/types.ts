@@ -1,3 +1,5 @@
+import { CallExpression, Expression, NumberLiteral, StringLiteral } from "./codegen";
+
 export const EOL = Symbol('EOL');
 
 export enum TokenTypes {
@@ -27,7 +29,7 @@ export type Nodes =
 export interface RootNode {
     type: NodeTypes.Program
     body: ChildNode[]
-    _context?: ChildNode[]
+    _context?: Expression[]
 }
 
 export interface NumberLiteralNode {
@@ -44,7 +46,7 @@ export interface CallExpressionNode {
     type: NodeTypes.CallExpression
     name: string
     params: ChildNode[]
-    _context?: ChildNode[]
+    _context?: (CallExpression | NumberLiteral | StringLiteral)[]
 }
 
 export type ChildNode = CallExpressionNode | NumberLiteralNode | StringLiteralNode;
