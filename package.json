@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "vitest",
-    "lint": "eslint ./src/"
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [],
   "author": "Kael Zhu <zljmms32@gmail.com>",

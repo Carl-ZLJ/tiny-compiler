@@ -1,9 +1,10 @@
+import { CallExpression, Expression, Program, Types } from "./codegen";
 import { traverser } from "./traverser";
 import { NodeTypes, RootNode, Visitor } from "./types";
 
 export function transformer(ast: RootNode) {
-    let newAst = {
-        type: NodeTypes.Program,
+    let newAst: Program = {
+        type: Types.Program,
         body: []
     }
 
@@ -12,10 +13,11 @@ export function transformer(ast: RootNode) {
     const visitors: Visitor = {
         CallExpression: {
             enter(node, parent) {
-                let expression: any = {
-                    type: 'CallExpression',
+                let expression: CallExpression
+                expression = {
+                    type: Types.CallExpression,
                     callee: {
-                        type: 'Identifier',
+                        type: Types.Identifier,
                         name: node.name,
                     },
                     arguments: [],
@@ -24,19 +26,20 @@ export function transformer(ast: RootNode) {
                 node._context = expression.arguments
 
                 if (parent.type !== NodeTypes.CallExpression) {
-                    expression = {
-                        type: 'ExpressionStatement',
+                    parent._context?.push({
+                        type: Types.ExpressionStatement,
                         expression: expression,
-                    }
+                    })
+                } else {
+                    parent._context?.push(expression)
                 }
 
-                parent._context?.push(expression)
             },
         },
         NumberLiteral: {
             enter(node, parent) {
                 parent._context?.push({
-                    type: NodeTypes.NumberLiteral,
+                    type: Types.NumberLiteral,
                     value: node.value,
                 })
             },
@@ -44,7 +47,7 @@ export function transformer(ast: RootNode) {
         StringLiteral: {
             enter(node, parent) {
                 parent._context?.push({
-                    type: NodeTypes.StringLiteral,
+                    type: Types.StringLiteral,
                     value: node.value,
                 })
 
