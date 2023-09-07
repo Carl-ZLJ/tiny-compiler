@@ -7,6 +7,7 @@
 - use typescript
 - use TDD
 - use FSM
+- use git to manage repository(merge and rebase)
 
 
 
