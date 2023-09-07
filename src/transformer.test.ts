@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { CallExpressionNode, NodeTypes, NumberLiteralNode, RootNode, Visitor } from './types'
+import { CallExpressionNode, TransformedNodeTypes, NumberLiteralNode, RootNode, Visitor, NodeTypes } from './types'
 import { transformer } from './transformer'
 
 test('transformer', () => {

@@ -1,67 +1,17 @@
-export enum Types {
-    Program = 'Program',
-    ExpressionStatement = 'ExpressionStatement',
-    CallExpression = 'CallExpression',
-    Identifier = 'Identifier',
-    NumberLiteral = 'NumberLiteral',
-    StringLiteral = 'StringLiteral',
-}
+import { TransformedNodeTypes, TransformedNodes } from "./types"
 
-type Node = {
-    type: Types
-}
-
-export type Nodes =
-    | Program
-    | Expression
-    | CallExpression
-    | Identifier
-    | NumberLiteral
-    | StringLiteral
-
-export interface StringLiteral extends Node {
-    type: Types.StringLiteral,
-    value: string
-}
-
-export interface NumberLiteral extends Node {
-    type: Types.NumberLiteral,
-    value: string
-}
-
-export interface Identifier extends Node {
-    type: Types.Identifier,
-    name: string
-}
-
-export interface CallExpression extends Node {
-    type: Types.CallExpression
-    callee: Identifier
-    arguments: (NumberLiteral| CallExpression | StringLiteral)[]
-}
-
-export interface Expression extends Node {
-    type: Types.ExpressionStatement,
-    expression: CallExpression
-}
-
-export interface Program extends Node {
-    type: Types.Program,
-    body: Expression[]
-}
-
-export function codeGenerator(node: Nodes): string {
+export function codeGenerator(node: TransformedNodes): string {
 
     switch (node.type) {
-        case Types.Program:
+        case TransformedNodeTypes.Program:
             return node.body.map(codeGenerator).join('\n')
 
-        case Types.ExpressionStatement:
+        case TransformedNodeTypes.ExpressionStatement:
             return (
                 codeGenerator(node.expression) + ';'
             )
 
-        case Types.CallExpression:
+        case TransformedNodeTypes.CallExpression:
             return (
                 codeGenerator(node.callee) +
                 '(' +
@@ -69,13 +19,13 @@ export function codeGenerator(node: Nodes): string {
                 ')'
             )
 
-        case Types.Identifier:
+        case TransformedNodeTypes.Identifier:
             return node.name
 
-        case Types.NumberLiteral:
+        case TransformedNodeTypes.NumberLiteral:
             return node.value
 
-        case Types.StringLiteral:
+        case TransformedNodeTypes.StringLiteral:
             return '"' + node.value + '"'
 
         default:

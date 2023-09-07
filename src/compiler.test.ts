@@ -1,5 +1,4 @@
 import { expect, test } from 'vitest'
-import { Program, Types, codeGenerator } from './codegen'
 import { compiler } from './compiler'
 
 test('compiler', () => {

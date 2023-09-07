@@ -1,5 +1,5 @@
-import { EOL } from "./types";
-import { CallExpressionNode, NodeTypes, NumberLiteralNode, RootNode, Token, TokenTypes } from "./types";
+import { EOL, NodeTypes } from "./types";
+import { CallExpressionNode, NumberLiteralNode, RootNode, Token, TokenTypes } from "./types";
 
 let rootNode: RootNode
 let currentNode: unknown[]

@@ -1,31 +1,32 @@
 import { expect, test } from 'vitest'
-import { Program, Types, codeGenerator } from './codegen'
+import { Program, TransformedNodeTypes } from './types'
+import { codeGenerator } from './codegen'
 
 test('code generator', () => {
     const ast: Program = {
-        type: Types.Program,
+        type: TransformedNodeTypes.Program,
         body: [{
-            type: Types.ExpressionStatement,
+            type: TransformedNodeTypes.ExpressionStatement,
             expression: {
-                type: Types.CallExpression,
+                type: TransformedNodeTypes.CallExpression,
                 callee: {
-                    type: Types.Identifier,
+                    type: TransformedNodeTypes.Identifier,
                     name: 'add'
                 },
                 arguments: [{
-                    type: Types.NumberLiteral,
+                    type: TransformedNodeTypes.NumberLiteral,
                     value: '2'
                 }, {
-                    type: Types.CallExpression,
+                    type: TransformedNodeTypes.CallExpression,
                     callee: {
-                        type: Types.Identifier,
+                        type: TransformedNodeTypes.Identifier,
                         name: 'subtract'
                     },
                     arguments: [{
-                        type: Types.NumberLiteral,
+                        type: TransformedNodeTypes.NumberLiteral,
                         value: '4'
                     }, {
-                        type: Types.NumberLiteral,
+                        type: TransformedNodeTypes.NumberLiteral,
                         value: '2'
                     }]
                 }]
@@ -37,46 +38,46 @@ test('code generator', () => {
 
 test('code generator double', () => {
     const ast: Program = {
-        type: Types.Program,
+        type: TransformedNodeTypes.Program,
         body: [{
-            type: Types.ExpressionStatement,
+            type: TransformedNodeTypes.ExpressionStatement,
             expression: {
-                type: Types.CallExpression,
+                type: TransformedNodeTypes.CallExpression,
                 callee: {
-                    type: Types.Identifier,
+                    type: TransformedNodeTypes.Identifier,
                     name: 'add'
                 },
                 arguments: [{
-                    type: Types.NumberLiteral,
+                    type: TransformedNodeTypes.NumberLiteral,
                     value: '2'
                 }, {
-                    type: Types.CallExpression,
+                    type: TransformedNodeTypes.CallExpression,
                     callee: {
-                        type: Types.Identifier,
+                        type: TransformedNodeTypes.Identifier,
                         name: 'subtract'
                     },
                     arguments: [{
-                        type: Types.NumberLiteral,
+                        type: TransformedNodeTypes.NumberLiteral,
                         value: '4'
                     }, {
-                        type: Types.NumberLiteral,
+                        type: TransformedNodeTypes.NumberLiteral,
                         value: '2'
                     }]
                 }]
             }
         }, {
-            type: Types.ExpressionStatement,
+            type: TransformedNodeTypes.ExpressionStatement,
             expression: {
-                type: Types.CallExpression,
+                type: TransformedNodeTypes.CallExpression,
                 callee: {
-                    type: Types.Identifier,
+                    type: TransformedNodeTypes.Identifier,
                     name: 'add'
                 },
                 arguments: [{
-                    type: Types.NumberLiteral,
+                    type: TransformedNodeTypes.NumberLiteral,
                     value: '2'
                 }, {
-                    type: Types.NumberLiteral,
+                    type: TransformedNodeTypes.NumberLiteral,
                     value: '2'
                 }]
             }

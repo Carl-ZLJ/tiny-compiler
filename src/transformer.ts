@@ -1,10 +1,9 @@
-import { CallExpression, Expression, Program, Types } from "./codegen";
 import { traverser } from "./traverser";
-import { NodeTypes, RootNode, Visitor } from "./types";
+import { RootNode, Visitor, Program, CallExpression, TransformedNodeTypes, NodeTypes } from "./types";
 
 export function transformer(ast: RootNode) {
     let newAst: Program = {
-        type: Types.Program,
+        type: TransformedNodeTypes.Program,
         body: []
     }
 
@@ -15,9 +14,9 @@ export function transformer(ast: RootNode) {
             enter(node, parent) {
                 let expression: CallExpression
                 expression = {
-                    type: Types.CallExpression,
+                    type: TransformedNodeTypes.CallExpression,
                     callee: {
-                        type: Types.Identifier,
+                        type: TransformedNodeTypes.Identifier,
                         name: node.name,
                     },
                     arguments: [],
@@ -27,7 +26,7 @@ export function transformer(ast: RootNode) {
 
                 if (parent.type !== NodeTypes.CallExpression) {
                     parent._context?.push({
-                        type: Types.ExpressionStatement,
+                        type: TransformedNodeTypes.ExpressionStatement,
                         expression: expression,
                     })
                 } else {
@@ -39,7 +38,7 @@ export function transformer(ast: RootNode) {
         NumberLiteral: {
             enter(node, parent) {
                 parent._context?.push({
-                    type: Types.NumberLiteral,
+                    type: TransformedNodeTypes.NumberLiteral,
                     value: node.value,
                 })
             },
@@ -47,7 +46,7 @@ export function transformer(ast: RootNode) {
         StringLiteral: {
             enter(node, parent) {
                 parent._context?.push({
-                    type: Types.StringLiteral,
+                    type: TransformedNodeTypes.StringLiteral,
                     value: node.value,
                 })
 

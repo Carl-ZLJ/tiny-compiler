@@ -1,4 +1,4 @@
-import { ChildNode, NodeTypes, Nodes, Parent, RootNode, Visitor, VisitorFunc } from "./types";
+import { ChildNode, TransformedNodeTypes, Nodes, Parent, RootNode, Visitor, VisitorFunc, NodeTypes } from "./types";
 
 
 export function traverser(ast: RootNode, visitor: Visitor) {
