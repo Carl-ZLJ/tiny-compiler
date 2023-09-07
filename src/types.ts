@@ -1,5 +1,3 @@
-import { CallExpression, Expression, NumberLiteral, StringLiteral } from "./codegen";
-
 export const EOL = Symbol('EOL');
 
 export enum TokenTypes {
@@ -60,6 +58,11 @@ export interface VisitorFunc<N, P> {
     exit?: Method<N, P>
 }
 
+type ProgramVisitor = VisitorFunc<RootNode, null>
+type NumberLiteralVisitor = VisitorFunc<NumberLiteralNode, CallExpressionNode>
+type StringLiteralVisitor = VisitorFunc<StringLiteralNode, CallExpressionNode>
+type CallExpressionVisitor = VisitorFunc<CallExpressionNode, RootNode | CallExpressionNode>
+
 export interface Visitor {
     Program?: ProgramVisitor
     NumberLiteral?: NumberLiteralVisitor
@@ -67,8 +70,54 @@ export interface Visitor {
     CallExpression?: CallExpressionVisitor
 }
 
-type ProgramVisitor = VisitorFunc<RootNode, null>
-type NumberLiteralVisitor = VisitorFunc<NumberLiteralNode, CallExpressionNode>
-type StringLiteralVisitor = VisitorFunc<StringLiteralNode, CallExpressionNode>
-type CallExpressionVisitor = VisitorFunc<CallExpressionNode, RootNode | CallExpressionNode>
+export enum TransformedNodeTypes {
+    Program = 'Program',
+    ExpressionStatement = 'ExpressionStatement',
+    CallExpression = 'CallExpression',
+    Identifier = 'Identifier',
+    NumberLiteral = 'NumberLiteral',
+    StringLiteral = 'StringLiteral',
+}
 
+type Node = {
+    type: TransformedNodeTypes
+}
+
+export type TransformedNodes =
+    | Program
+    | Expression
+    | CallExpression
+    | Identifier
+    | NumberLiteral
+    | StringLiteral
+
+export interface StringLiteral extends Node {
+    type: TransformedNodeTypes.StringLiteral,
+    value: string
+}
+
+export interface NumberLiteral extends Node {
+    type: TransformedNodeTypes.NumberLiteral,
+    value: string
+}
+
+export interface Identifier extends Node {
+    type: TransformedNodeTypes.Identifier,
+    name: string
+}
+
+export interface CallExpression extends Node {
+    type: TransformedNodeTypes.CallExpression
+    callee: Identifier
+    arguments: (NumberLiteral | CallExpression | StringLiteral)[]
+}
+
+export interface Expression extends Node {
+    type: TransformedNodeTypes.ExpressionStatement,
+    expression: CallExpression
+}
+
+export interface Program extends Node {
+    type: TransformedNodeTypes.Program,
+    body: Expression[]
+}

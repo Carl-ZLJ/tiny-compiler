@@ -1,5 +1,5 @@
 import { expect, it, describe } from 'vitest'
-import { NodeTypes, Token, TokenTypes } from './types'
+import { TransformedNodeTypes, Token, TokenTypes } from './types'
 import { parser } from './parser'
 
 
@@ -9,9 +9,9 @@ describe('simple parser', () => {
             { type: TokenTypes.Num, value: '22' },
         ]
         const ast = {
-            type: NodeTypes.Program,
+            type: TransformedNodeTypes.Program,
             body: [{
-                type: NodeTypes.NumberLiteral,
+                type: TransformedNodeTypes.NumberLiteral,
                 value: '22',
             }]
         }
@@ -24,9 +24,9 @@ describe('simple parser', () => {
             { type: TokenTypes.Name, value: 'add' },
         ]
         const ast = {
-            type: NodeTypes.Program,
+            type: TransformedNodeTypes.Program,
             body: [{
-                type: NodeTypes.CallExpression,
+                type: TransformedNodeTypes.CallExpression,
                 name: 'add',
                 params: [],
             }]
@@ -45,17 +45,17 @@ describe('compound expressions', () => {
             { type: TokenTypes.Paren, value: ')' },
         ]
         const ast = {
-            type: NodeTypes.Program,
+            type: TransformedNodeTypes.Program,
             body: [{
-                type: NodeTypes.CallExpression,
+                type: TransformedNodeTypes.CallExpression,
                 name: 'add',
                 params: [
                     {
-                        type: NodeTypes.NumberLiteral,
+                        type: TransformedNodeTypes.NumberLiteral,
                         value: '1',
                     },
                     {
-                        type: NodeTypes.NumberLiteral,
+                        type: TransformedNodeTypes.NumberLiteral,
                         value: '22',
                     }
                 ],
@@ -79,32 +79,32 @@ describe('compound expressions', () => {
             { type: TokenTypes.Paren, value: ')' },
         ]
         const ast = {
-            type: NodeTypes.Program,
+            type: TransformedNodeTypes.Program,
             body: [
                 {
-                    type: NodeTypes.CallExpression,
+                    type: TransformedNodeTypes.CallExpression,
                     name: 'add',
                     params: [
                         {
-                            type: NodeTypes.NumberLiteral,
+                            type: TransformedNodeTypes.NumberLiteral,
                             value: '1',
                         },
                         {
-                            type: NodeTypes.NumberLiteral,
+                            type: TransformedNodeTypes.NumberLiteral,
                             value: '22',
                         }
                     ],
                 },
                 {
-                    type: NodeTypes.CallExpression,
+                    type: TransformedNodeTypes.CallExpression,
                     name: 'add',
                     params: [
                         {
-                            type: NodeTypes.NumberLiteral,
+                            type: TransformedNodeTypes.NumberLiteral,
                             value: '22',
                         },
                         {
-                            type: NodeTypes.NumberLiteral,
+                            type: TransformedNodeTypes.NumberLiteral,
                             value: '33',
                         }
                     ],
